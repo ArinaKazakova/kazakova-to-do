@@ -1,0 +1,30 @@
+{
+  "todoList": [
+    {
+      "text": "Пополнить счет",
+      "category": "Работа",
+      "isCompleted": false,
+      "id": 0
+    },
+    {
+      "id": 0.5314693711024054,
+      "text": "Помыть полы",
+      "category": "Дом",
+      "isCompleted": false
+    }
+  ],
+  "categories": [
+    {
+      "text": "Учеба",
+      "id": 0
+    },
+    {
+      "text": "Работа",
+      "id": 2
+    },
+    {
+      "text": "Дом",
+      "id": 0.0218061182394369
+    }
+  ]
+}

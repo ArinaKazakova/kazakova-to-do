@@ -1,9 +1,9 @@
 import React from 'react';
-import ToDoList from './pages/ToDoList';
+import Router from './router';
 
 const App = () => (
   <div className="App">
-    <ToDoList />
+    <Router />
   </div>
 );
 
