@@ -5,7 +5,7 @@ const ListItem = ({ id, text, isCompleted, handleDelete, handleItemClick }) => (
   <li>
     <input type="checkbox" checked={isCompleted} onChange={() => handleItemClick(id)} />
     <span>{text} </span>
-    <button type="button" onClick={handleDelete}>
+    <button type="button" onClick={() => handleDelete(id)}>
       Delete
     </button>
   </li>

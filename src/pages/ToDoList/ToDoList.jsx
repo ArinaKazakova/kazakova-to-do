@@ -35,7 +35,13 @@ const ToDoList = () => {
         id: list.length + 1,
       };
       setListState([...list, newItem]);
+      setInputState('');
     }
+  };
+
+  const deleteItem = (id) => {
+    const filteredList = list.filter((item) => item.id !== id);
+    setListState(filteredList);
   };
 
   return (
@@ -80,13 +86,18 @@ const ToDoList = () => {
           listStyleType: 'none',
         }}
       >
+        {!list.length && (
+          <h3>
+            <b>Empty list</b>
+          </h3>
+        )}
         {list.map(({ text, isCompleted, id }) => (
           <ListItem
             key={id}
             id={id}
             text={text}
             isCompleted={isCompleted}
-            handleDelete={() => {}}
+            handleDelete={deleteItem}
             handleItemClick={handleItemClick}
           />
         ))}
