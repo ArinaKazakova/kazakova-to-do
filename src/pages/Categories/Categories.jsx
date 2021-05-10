@@ -1,16 +1,30 @@
 import React, { memo, useState, useEffect } from 'react';
+import { Button, Container, Table } from 'react-bootstrap';
 
 import ListItem from '../../components/ListItem';
 import ENDPOINTS from '../../endpoints';
 import { getData, sendData, deleteItem as deleteListItem } from '../../api';
+import Modal from '../../components/Modal';
 
 const Categories = () => {
   const [list, setListState] = useState([]);
-
+  const [modalState, setModalState] = useState(false);
+  const [isInvalid, setIsInvalidState] = useState(false);
   const [inputState, setInputState] = useState('');
 
   const handleInput = (e) => {
     setInputState(e.target.value);
+    setIsInvalidState(false);
+  };
+
+  const openModal = () => {
+    setModalState(true);
+  };
+
+  const closeModal = () => {
+    setModalState(false);
+    setInputState('');
+    setIsInvalidState(false);
   };
 
   const addItem = async () => {
@@ -25,6 +39,9 @@ const Categories = () => {
         await sendData(ENDPOINTS.categories, newItem);
         getList();
         setInputState('');
+        closeModal();
+      } else {
+        setIsInvalidState(true);
       }
     }
   };
@@ -44,14 +61,18 @@ const Categories = () => {
   }, []);
 
   return (
-    <div
-      style={{
-        width: '600px',
-        margin: '60px auto',
-        padding: '50px',
-        background: 'mintcream',
-      }}
-    >
+    <Container className="p-5">
+      <Modal
+        isOpen={modalState}
+        handleClose={closeModal}
+        handleClick={addItem}
+        handleInput={handleInput}
+        inputState={inputState}
+        isInvalid={isInvalid}
+      />
+      <Button type="button" onClick={openModal}>
+        Add new category
+      </Button>
       <div
         style={{
           display: 'flex',
@@ -60,7 +81,7 @@ const Categories = () => {
           margin: '0 auto 40px',
         }}
       >
-        <input
+        {/* <input
           style={{
             width: '500px',
             padding: '10px',
@@ -78,29 +99,37 @@ const Categories = () => {
           onClick={addItem}
         >
           Add +
-        </button>
+        </button> */}
       </div>
-      <ul
-        style={{
-          listStyleType: 'none',
-        }}
-      >
-        {!list.length && (
-          <h3>
-            <b>Empty list</b>
-          </h3>
-        )}
-        {list.map(({ text, isCompleted, id }) => (
-          <ListItem
-            key={id}
-            id={id}
-            text={text}
-            isCompleted={isCompleted}
-            handleDelete={deleteItem}
-          />
-        ))}
-      </ul>
-    </div>
+      {!list.length && (
+        <h3>
+          <b>Empty list</b>
+        </h3>
+      )}
+      {!!list.length && (
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Category</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {list.map(({ text, isCompleted, id }, index) => (
+              <ListItem
+                key={id}
+                id={id}
+                text={text}
+                index={index + 1}
+                isCompleted={isCompleted}
+                handleDelete={deleteItem}
+              />
+            ))}
+          </tbody>
+        </Table>
+      )}
+    </Container>
   );
 };
 

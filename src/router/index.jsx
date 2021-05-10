@@ -1,16 +1,14 @@
 import React from 'react';
-import { BrowserRouter as Routes, Route } from 'react-router-dom';
-import Header from '../components/Header';
+import { Switch, Route } from 'react-router-dom';
 
 import ROUTES from './constants';
 
 const Router = () => (
-  <Routes>
-    <Header />
+  <Switch>
     {ROUTES.map((route) => (
       <Route exact key={route.path} path={route.path} component={route.component} />
     ))}
-  </Routes>
+  </Switch>
 );
 
 export default Router;

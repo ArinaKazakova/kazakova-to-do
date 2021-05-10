@@ -1,16 +1,32 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
 
-const ListItem = ({ showCheckout, id, text, isCompleted, handleDelete, handleItemClick }) => (
-  <li>
+const ListItem = ({
+  showCheckout,
+  id,
+  text,
+  index,
+  isCompleted,
+  handleDelete,
+  handleItemClick,
+}) => (
+  <tr>
+    <td>{index}</td>
     {showCheckout && (
-      <input type="checkbox" checked={isCompleted} onChange={() => handleItemClick(id)} />
+      <td>
+        <input type="checkbox" checked={isCompleted} onChange={() => handleItemClick(id)} />
+      </td>
     )}
-    <span>{text} </span>
-    <button type="button" onClick={() => handleDelete(id)}>
-      Delete
-    </button>
-  </li>
+    <td>
+      <span>{text} </span>
+    </td>
+    <td>
+      <Button variant="danger" type="button" onClick={() => handleDelete(id)}>
+        Delete
+      </Button>
+    </td>
+  </tr>
 );
 
 export default memo(ListItem);
@@ -28,4 +44,5 @@ ListItem.propTypes = {
   isCompleted: PropTypes.bool,
   handleDelete: PropTypes.func.isRequired,
   handleItemClick: PropTypes.func,
+  index: PropTypes.number.isRequired,
 };
