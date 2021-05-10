@@ -1,12 +1,15 @@
 import React, { memo, useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Button, Container, Table } from 'react-bootstrap';
 
 import ListItem from '../../components/ListItem';
 import ENDPOINTS from '../../endpoints';
 import { getData, sendData, deleteItem as deleteListItem } from '../../api';
 import Modal from '../../components/Modal';
+import CategoryActions from '../../store/actions/categories';
 
 const Categories = () => {
+  const dispatch = useDispatch();
   const [list, setListState] = useState([]);
   const [modalState, setModalState] = useState(false);
   const [isInvalid, setIsInvalidState] = useState(false);
@@ -36,7 +39,11 @@ const Categories = () => {
 
       const isDublicated = list.find((elem) => elem.text === inputState);
       if (!isDublicated) {
-        await sendData(ENDPOINTS.categories, newItem);
+        // await sendData(ENDPOINTS.categories, newItem);
+        dispatch(
+          CategoryActions.addCategoriesRequest({ url: ENDPOINTS.categories, payload: newItem }),
+        );
+
         getList();
         setInputState('');
         closeModal();
@@ -47,7 +54,7 @@ const Categories = () => {
   };
 
   const deleteItem = (id) => {
-    deleteListItem(ENDPOINTS.categories, id);
+    deleteListItem({ url: ENDPOINTS.categories, id });
     getList();
   };
 

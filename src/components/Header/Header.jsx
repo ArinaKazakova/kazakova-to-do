@@ -10,10 +10,8 @@ const Header = () => (
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="mr-auto">
         {ROUTES.map((route) => (
-          <Nav.Item>
-            <Nav.Link key={route.path} href={route.path}>
-              {route.label}
-            </Nav.Link>
+          <Nav.Item key={route.path}>
+            <Nav.Link href={route.path}>{route.label}</Nav.Link>
           </Nav.Item>
         ))}
       </Nav>

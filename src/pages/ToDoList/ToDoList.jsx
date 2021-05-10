@@ -1,11 +1,14 @@
 import React, { memo, useState, useEffect } from 'react';
 import { Button, Container, Table, Form, Col } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 
 import ListItem from '../../components/ListItem';
 import ENDPOINTS from '../../endpoints';
 import { getData, sendData, deleteItem as deleteListItem, updateItem } from '../../api';
+import TodoActions from '../../store/actions/todo';
 
 const ToDoList = () => {
+  const dispatch = useDispatch();
   const [list, setListState] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selected, setSelected] = useState();
@@ -17,11 +20,14 @@ const ToDoList = () => {
 
   const handleItemClick = (id) => {
     const todoItem = list.find((elem) => elem.id === id);
-    updateItem(ENDPOINTS.todoList, { ...todoItem, isCompleted: !todoItem.isCompleted });
+    updateItem({
+      url: ENDPOINTS.todoList,
+      payload: { ...todoItem, isCompleted: !todoItem.isCompleted },
+    });
     getList();
   };
 
-  const addItem = async () => {
+  const addItem = () => {
     if (inputState.trim()) {
       const newItem = {
         id: Math.random(),
@@ -29,14 +35,14 @@ const ToDoList = () => {
         category: selected,
         isCompleted: false,
       };
-      await sendData(ENDPOINTS.todoList, newItem);
+      dispatch(TodoActions.addToDoRequest({ url: ENDPOINTS.todoList, payload: newItem }));
       getList();
       setInputState('');
     }
   };
 
   const deleteItem = (id) => {
-    deleteListItem(ENDPOINTS.todoList, id);
+    deleteListItem({ url: ENDPOINTS.todoList, id });
     getList();
   };
 
